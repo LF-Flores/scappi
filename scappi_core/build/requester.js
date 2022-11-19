@@ -14,8 +14,8 @@ export default class Requester {
     create_ScadId(size = 20) {
         return random_id(size);
     }
-    create_request() {
-        return new Request(this);
+    create_request(available_validators) {
+        return new Request(this, available_validators);
     }
 }
 function generate_random_tiws(how_many = 3, id_length = 20) {

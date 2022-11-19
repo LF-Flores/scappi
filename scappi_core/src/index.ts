@@ -3,11 +3,15 @@ import { ValidatorsPool } from './validator.js'
 import SCAS from './scas.js'
 
 
+// Agents
 const available_validators = new ValidatorsPool()
 const user = new Requester()
-const request = user.create_request()
-const scas = new SCAS(available_validators, user)
-const selected = scas.select_validators()
+
+// Creating request with the available validators.
+const request = user.create_request(available_validators)
+
+// Exploring 
+const selected = request.selected_validators
 
 console.log(request, "\n")
 console.log(available_validators, "\n")

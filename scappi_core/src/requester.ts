@@ -1,5 +1,6 @@
 import { random_id } from "./utils.js"
 import Request from "./request.js"
+import { ValidatorsPool } from "./validator.js";
 
 export default class Requester {
     id: string;
@@ -24,8 +25,8 @@ export default class Requester {
         return random_id(size)
     }
 
-    create_request() {
-        return new Request(this)
+    create_request(available_validators: ValidatorsPool) {
+        return new Request(this, available_validators)
     }
 }
 
