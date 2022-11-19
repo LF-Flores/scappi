@@ -1,5 +1,5 @@
 import { ValidatorsPool, Validator } from './validator.js';
-import { Requester } from './requester';
+import Requester from './requester';
 export default class SCAS {
     available_validators_pool: ValidatorsPool;
     requester: Requester;

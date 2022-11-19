@@ -1,5 +1,4 @@
-import { create_ScadId } from './requester.js'
-import random_id from "./utils.js"
+import { random_id } from "./utils.js"
 
 class Validator {
     id: string;

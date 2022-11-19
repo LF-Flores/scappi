@@ -1,4 +1,4 @@
-import random_id from "./utils.js";
+import { random_id } from "./utils.js";
 class Validator {
     id;
     constructor(size_of_id = 20) {
