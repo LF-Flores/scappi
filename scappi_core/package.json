@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.11.9",
+    "crypto-ts": "^1.0.2",
     "shamirs-secret-sharing": "^1.0.1"
   }
 }

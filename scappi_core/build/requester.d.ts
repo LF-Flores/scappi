@@ -1,4 +1,4 @@
-import Request from "./request.js";
+import Request from "./requests.js";
 import { ValidatorsPool } from "./validator.js";
 export default class Requester {
     id: string;

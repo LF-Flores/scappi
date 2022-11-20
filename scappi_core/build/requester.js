@@ -1,5 +1,5 @@
 import { random_id } from "./utils.js";
-import Request from "./request.js";
+import Request from "./requests.js";
 export default class Requester {
     id;
     number_of_validators;

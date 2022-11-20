@@ -1,5 +1,5 @@
 import { random_id } from "./utils.js"
-import Request from "./request.js"
+import { SignUpRequest, AuthRequest } from "./requests.js"
 import { ValidatorsPool } from "./validator.js";
 
 export default class Requester {
@@ -25,8 +25,12 @@ export default class Requester {
         return random_id(size)
     }
 
-    create_request(available_validators: ValidatorsPool) {
-        return new Request(this, available_validators)
+    create_signup_request(available_validators: ValidatorsPool) {
+        return new SignUpRequest(this, available_validators)
+    }
+
+    create_authentication_request(wallet_address: string) {
+        return new AuthRequest(this, wallet_address)
     }
 }
 
