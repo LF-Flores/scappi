@@ -12,6 +12,9 @@ This reflects the traits of two kinds of usual authentication schemes:
 - Ownership-based (something the user has), since they are more easily “owned” by some device representation (your mobile’s/pc’s storage, hardware wallet, etc.).
     
 We propose a generalization for the third kind of authentication scheme: Inherence-based (something the user does), by leveraging the interactions the blockchain system enable external users to do to change its state. That is: an authentication scheme that assigns some unique state-changing capability to each user for them to authenticate themselves to the blockchain system. 
+
+# How to run?
+You need Typescript's compiler: `tsc` installed. Next, from the `scappi_core` directory, run `tsc && node build/index.js`.
     
 # Scappi's Advantages    
 Advantages with respect of traditional blockchain-authentication schemes:
