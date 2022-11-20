@@ -1,7 +1,5 @@
 import Requester from './requester.js'
 import { ValidatorsPool } from './validator.js'
-import SCAS from './scas.js'
-
 
 // Agents
 const available_validators = new ValidatorsPool()

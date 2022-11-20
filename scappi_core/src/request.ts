@@ -23,4 +23,8 @@ export default class Request {
         const secret = Buffer.from(scas_id)
         return sss.split(secret, { shares: n, threshold: n })
     }
+
+    send() {
+        
+    }
 }

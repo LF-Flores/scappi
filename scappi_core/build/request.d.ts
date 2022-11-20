@@ -8,5 +8,6 @@ export default class Request {
     selected_validators: Validator[];
     constructor(requester: Requester, available_validators: ValidatorsPool);
     shamir_share(n: number, scas_id: string): [Buffer];
+    send(): void;
 }
 //# sourceMappingURL=request.d.ts.map
