@@ -32,6 +32,15 @@ class Validator {
     generate_challenge(request: Request): IndividualChallenge {
         return new IndividualChallenge(this, request)
     }
+
+    initiate_auth_request(request: AuthRequest, consensus_table: Map<string, string>) {
+        const applicable = this.applicable_auth_request(request, consensus_table)
+        if (applicable) {
+            const challenges = this.generate_challenge(request)
+            // logic for shard delivery
+        }
+        // logic for error case
+    }
 }
 
 class ValidatorsPool {

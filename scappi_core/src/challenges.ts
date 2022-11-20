@@ -6,6 +6,7 @@ class IndividualChallenge {
     validator: Validator
     requester: Requester
     value: number
+    // Add counter's logic
 
     constructor(validator: Validator, request: Request) {
         this.value = Math.floor((Math.random() * 100) + 1)
