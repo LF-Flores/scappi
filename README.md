@@ -13,7 +13,7 @@ This reflects the traits of two kinds of usual authentication schemes:
     
 We propose a generalization for the third kind of authentication scheme: Inherence-based (something the user does), by leveraging the interactions the blockchain system enable external users to do to change its state. That is: an authentication scheme that assigns some unique state-changing capability to each user for them to authenticate themselves to the blockchain system. 
     
-# Advantages with respet to traditional authentication schemes    
+# Scappi's Advantages    
 Advantages with respect of traditional blockchain-authentication schemes:
     
 1. **Parallel authentication:** You can authenticate to multiple chains with the same external action from the user, resulting in a parallel cross-chain authentication and a better user experience (no need for approval processes on multiple chains).
