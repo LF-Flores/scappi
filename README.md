@@ -43,22 +43,49 @@ Additionaly to simulating any use case of the previously mentioned [schemes/syst
 - Authenticate yourself to some service on the blockchain system in a trust-less way.
 
 # Our implementation of a SCAS: Scappi
-- **Goal**: Authenticate a user uniquely using only decentralized resources and no intermediary secret. This means: 
-  - Input: Some action from the user, mapped into a set of states only they should be able to change from a given (but arbitrary) starting state. The state in a EVM-based chain can be described as a vector of accounts objects plus some EVM stack. For our purposes, our total state space will be the transaction history of each account and, for a given user, `u`, we define their unique associated state subspace, `S_u`, es the transaction history of some selected wallets. 
-  - Output: `Result<Bool>` that can take the following values: `Ok(True)`, `Ok(False)`, `Error`.
+## Goal 
+Authenticate a user uniquely using only decentralized resources and no intermediary secret. This means: 
 
-- **Components**
-  - Users = requesters: 
-    - Initiate authentication requests to the smart contract. **Specifically**: Sends request (`hash(requester_address)`) to the request queue.
-    - Performs state-changing action: Takes the initial state `s_0`, and changes it into some state from `S_u`, achievable from `s_0`. **Specifically:** sends transactions from the TIWs (dummy wallets we pretend the user can influence).
-    - Can receive message from the validators (the SCAS shards).
-    - Can reconstruct the SCAS shards into the original SCA token (SCAT). **Specifically**: `reconstruct_scat`
-  - Validators:
-    - Listens to smart contract request queue. **Specifically**: Have a method called `subscribe_to_sca_contract(Address: String) -> Bool` (from JS) that returns confirmation of the subscription success.
-    - Reacts to requests by accepting it (in case they have some SCAS shard for the respective user) or rejecting it otherwise. **Specifically**: Have a method called `applicable_request(request: String) -> { applicable: Bool, scas_shard: String }`
-    - Checks changes of state on the blockchain after some time, T, post-acceptance of a request. **Specifically**: A method called `check_state(TIWs: Vec<Address>, request_id: String)`
-    - Sends requester their SCAS shard. **Specifically**: `send_scas_shard`
-  - Mediator structure = Smart contract: 
-    - Contains `request_queue: Vec<String>`
-    - Contains `available_validators: Vec<String>`
-    - Manages payment in filecoin to the validators.
+- **Input**: Some action from the user, mapped into a set of states only they should be able to change from a given (but arbitrary) starting state. The state in a EVM-based chain can be described as a vector of accounts objects plus some EVM stack. For our purposes, our total state space will be the transaction history of each account and, for a given user, `u`, we define their unique associated state subspace, `S_u`, es the transaction history of some selected wallets. 
+- **Output**: `Result<Bool>` that can take the following values: `Ok(True)`, `Ok(False)`, `Error`.
+
+## Components
+- Users = requesters: 
+  - Initiate authentication requests to the smart contract. **Specifically**: Sends request (`hash(requester_address)`) to the request queue.
+  - Performs state-changing action: Takes the initial state `s_0`, and changes it into some state from `S_u`, achievable from `s_0`. **Specifically:** sends transactions from the TIWs (dummy wallets we pretend the user can influence).
+  - Can receive message from the validators (the SCAS shards).
+  - Can reconstruct the SCAS shards into the original SCA token (SCAT). **Specifically**: `reconstruct_scat`
+  
+- Validators:
+  - Listens to smart contract request queue. **Specifically**: Have a method called `subscribe_to_sca_contract(Address: String) -> Bool` (from JS) that returns confirmation of the subscription success.
+  - Reacts to requests by accepting it (in case they have some SCAS shard for the respective user) or rejecting it otherwise. **Specifically**: Have a method called `applicable_request(request: String) -> { applicable: Bool, scas_shard: String }`
+  - Checks changes of state on the blockchain after some time, T, post-acceptance of a request. **Specifically**: A method called `check_state(TIWs: Vec<Address>, request_id: String)`
+  - Sends requester their SCAS shard. **Specifically**: `send_scas_shard`
+  
+- Mediator structure = Smart contract: 
+  - Contains `request_queue: Vec<String>`
+  - Contains `available_validators: Vec<String>`
+  - Manages payment in filecoin to the validators.
+
+# Stages of the protocol: An overview
+## Setup stage:
+1. Agents running validator nodes should exist in the network. 
+2. All validator nodes subscribe to the smart contract by giving their given `id` to publicly announce on a `available_validators` array that they are subscribed.
+
+## User sign-up stage
+1. User wants to authenticate to the blockchain. They need to first “sign-up”. This requires to pay upfront for the time-window selected for the authentication to remain valid.
+2. a `ScasId` is produced for the user by the `create_ScadId` function (random number). 
+3. The `ScasID` is split by `shamir_sharing(n: Int, ScasID: String) -> Vec<String>` function into `n` pieces for `n` validators. We call these shards ******SCAS shards******.
+4. User randomly selects `n` validators from the `available_validators` array.
+5. User sends every selected validator one SCAS shard and each validator updates their secret-consensus table, `consensus_table`. The smart contract here records the validators that accepted and holds the payed for later payment of the validators (after they proof-of-spacetime).
+6. Validator signals success on the receiving end (by proof-of-replication).
+
+##  User authentication stage
+1. User sends a request (`hash(requester_address)`) with the `send_request() -> String` function, to the `request_queue` on the smart contract with a `request_id`.
+2. Every validator checks if the request corresponds to some SCAS shard they have by the `applicable_request(request: String) -> { applicable: Bool, scas_shard: String }` function.
+3. Every validator that checks positively, sends a challenge of state change with their method `generate_challenge() -> Int`. this challenge is stored on each validator’s state, associated with the `request_id`. 
+4. Each validator with a challenge sends them to the requester. A time counter begins to run for `T` time-units (either real-world time units or blockchain epochs).
+5. The requester changes the state of the blockchain.
+6. After `T` time-units, each validator checks the validity of the state-change.
+7. If checked positively, each validator send the requester their SCAS shard.
+8. The user reconstructs the SCAT from the SCAS shards. This concludes the authentication.
