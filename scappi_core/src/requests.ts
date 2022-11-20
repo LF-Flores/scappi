@@ -48,5 +48,6 @@ class AuthRequest extends Request {
 
 export {
     SignUpRequest,
-    AuthRequest
+    AuthRequest,
+    Request
 }

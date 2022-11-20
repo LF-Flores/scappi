@@ -1,6 +1,7 @@
 import { random_id } from "./utils.js"
-import { SignUpRequest, AuthRequest } from "./requests.js"
+import { Request, AuthRequest } from "./requests.js"
 import { SHA256 } from 'crypto-ts';
+import { IndividualChallenge } from './challenges.js'
 
 class Validator {
     id: string
@@ -26,6 +27,10 @@ class Validator {
         }
 
         return applicable
+    }
+
+    generate_challenge(request: Request): IndividualChallenge {
+        return new IndividualChallenge(this, request)
     }
 }
 
