@@ -38,7 +38,7 @@ class SignUpRequest extends Request {
 }
 
 class AuthRequest extends Request {
-    hash: String
+    hash: string
 
     constructor(requester: Requester, address: string) {
         super(requester)
